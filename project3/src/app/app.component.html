@@ -1,0 +1,47 @@
+申請庫別:
+<p-dropdown [options]="departNos" [(ngModel)]="selectedDepartNo" filter="true" [style]="{'width':'200px'}"></p-dropdown>
+庫存分類:
+<p-dropdown [options]="options" [(ngModel)]="selectedOption" [style]="{'width':'250px'}"></p-dropdown>
+<button pButton type="submit" (click)="click($event)" label="查詢"></button>
+<p-table class="auto" #dt [columns]="cols" [value]="medi" [paginator]="true" [rows]="100" [scrollable]="true" scrollHeight="840px">
+  <ng-template pTemplate="caption">
+    <div style="width: 100%">
+      <input type="text" pInputText size="50" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:100%" placeholder="篩選衛材(輸入衛材代碼或名稱)">
+    </div>
+  </ng-template>
+  <ng-template pTemplate="colgroup" let-columns>
+    <colgroup>
+      <col style="width: 150px">
+      <col style="width: 400px">
+      <col style="width: 150px">
+      <col style="width: 150px">
+      <col style="width: 150px">
+      <col style="width: 150px">
+      <col style="width: 250px">
+      <col style="width: 150px">
+    </colgroup>
+  </ng-template>
+
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of cols" [pSortableColumn]="col.field">
+        {{col.header}}
+        <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-medi>
+    <tr [pSelectableRow]="medi">
+      <td (onchange)="result($event)" [ngClass]="medi.diff > 0 ? 'plus' : (medi.diff < 0 ? 'minus' : 'normal')">{{medi.medCode}}</td>
+      <td (onchange)="result($event)" [ngClass]="medi.diff > 0 ? 'plus' : (medi.diff < 0 ? 'minus' : 'normal')">{{medi.matName}}</td>
+      <td style="text-align: right" (onchange)="result($event)" [ngClass]="medi.diff > 0 ? 'plus' : (medi.diff < 0 ? 'minus' : 'normal')">{{medi.totalQty}}</td>
+      <td (onchange)="result($event)" [ngClass]="medi.diff > 0 ? 'plus' : (medi.diff < 0 ? 'minus' : 'normal')">
+        <input type="text" name="input" style="width: 135px; text-align: right" [(ngModel)]="medi.qty" (keyup)="keyup(medi)">
+      </td>
+      <td style="text-align: right" (onchange)="result($event)" [ngClass]="medi.diff > 0 ? 'plus' : (medi.diff < 0 ? 'minus' : 'normal')">{{medi.diff}}</td>
+      <td (onchange)="result($event)" [ngClass]="medi.diff > 0 ? 'plus' : (medi.diff < 0 ? 'minus' : 'normal')">{{medi.ratioUnitName}}</td>
+      <td (onchange)="result($event)" [ngClass]="medi.diff > 0 ? 'plus' : (medi.diff < 0 ? 'minus' : 'normal')">{{medi.invTypeName}}</td>
+      <td (onchange)="result($event)" [ngClass]="medi.diff > 0 ? 'plus' : (medi.diff < 0 ? 'minus' : 'normal')">{{medi.storageNo}}</td>
+    </tr>
+  </ng-template>
+</p-table>
